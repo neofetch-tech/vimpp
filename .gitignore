@@ -1,5 +1,5 @@
 target/
-/dist/
+dist/
 Cargo.lock.orig
 *.tmp
 .vimplus/logs/
