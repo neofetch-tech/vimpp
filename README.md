@@ -47,7 +47,7 @@ Yet you keep the Neovim workflow: **modal editing, tabs, `:commands`, and plugin
 `vimpp` times `main()` → first frame and reports it on exit:
 
 ```
-⚡ Vim++ ready — booted in 6.1 ms. NamASTE ✌
+⚡ Vim++ ready — booted in 6.1 ms
 ```
 
 No plugins on disk = no plugin cost. Lua is vendored into the binary; `Lua::new()` costs microseconds.
@@ -56,7 +56,7 @@ No plugins on disk = no plugin cost. Lua is vendored into the binary; `Lua::new(
 
 ```sh
 # build from source (Rust 1.78+)
-git clone https://github.com/your-handle/vimpp && cd vimpp
+git clone https://github.com/neofetch-tech/vimpp && cd vimpp
 cargo build --release
 ./target/release/vimpp src/main.rs
 ```
