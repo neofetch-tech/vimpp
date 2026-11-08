@@ -47,7 +47,7 @@ Vim++ стартує за **однозначні мілісекунди** — в
 `vimpp` міряє час від `main()` до першого кадру і показує його при виході:
 
 ```
-⚡ Vim++ готовий — старт за 6.1 мс. NamASTE ✌
+⚡ Vim++ готовий — старт за 6.1 мс.
 ```
 
 Немає плагінів на диску = немає плати за плагіни. Lua вендориться в бінарник; `Lua::new()` коштує мікросекунди.
@@ -56,7 +56,7 @@ Vim++ стартує за **однозначні мілісекунди** — в
 
 ```sh
 # збірка з джерел (Rust 1.78+)
-git clone https://github.com/your-handle/vimpp && cd vimpp
+git clone https://github.com/neofetch-tech/vimpp && cd vimpp
 cargo build --release
 ./target/release/vimpp src/main.rs
 ```
