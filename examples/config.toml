@@ -1,0 +1,15 @@
+# ~/.vimplus/config.toml — the Rust-side config (theme + options).
+# Lua-side config lives next to it: ~/.vimplus/init.lua
+
+[editor]
+number = true
+relativenumber = false
+tabstop = 4
+expandtab = true
+
+[theme]
+# Nordic palette — override any of these:
+# bg        = "#2e3440"
+# panel     = "#3b4252"
+# accent    = "#a3be8c"
+# text      = "#d8dee9"
