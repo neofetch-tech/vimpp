@@ -56,7 +56,7 @@ No plugins on disk = no plugin cost. Lua is vendored into the binary; `Lua::new(
 
 ```sh
 # build from source (Rust 1.78+)
-git clone https://github.com/your-handle/vimpp && cd vimpp
+git clone https://github.com/neofetch-tech/vimpp && cd vimpp
 cargo build --release
 ./target/release/vimpp src/main.rs
 ```
