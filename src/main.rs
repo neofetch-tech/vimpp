@@ -48,6 +48,9 @@ fn main() -> Result<()> {
     if app.buffers.is_empty() {
         app.new_buffer();
     }
+    // The welcome menu is the first screen on every interactive launch,
+    // including launches that supplied a file or directory argument.
+    app.welcome_open = true;
     app.startup_ms = start.elapsed().as_secs_f64() * 1000.0;
 
     let mut terminal = ratatui::init();
@@ -130,6 +133,10 @@ fn run(terminal: &mut ratatui::DefaultTerminal, app: &mut app::App) -> Result<()
                 }
                 _ => {}
             }
+        }
+
+        if app.should_quit {
+            break;
         }
 
         app.drain_pending();

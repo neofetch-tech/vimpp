@@ -54,6 +54,20 @@ Vim++ стартує за **однозначні мілісекунди** — в
 
 ## Встановлення
 
+**Однією командою з останнього релізу** (Linux x86_64):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/neofetch-tech/vimpp/main/scripts/install-linux.sh | sh
+```
+
+**Windows PowerShell**:
+
+```powershell
+irm https://raw.githubusercontent.com/neofetch-tech/vimpp/main/scripts/install-windows.ps1 | iex
+```
+
+Інсталятор додає `vimpp` у користувацький `PATH`. Відкрий новий термінал, після чого запускай `vimpp`, `vimpp .` або `vimpp шлях/до/файлу`.
+
 ```sh
 # збірка з джерел (Rust 1.78+)
 git clone https://github.com/neofetch-tech/vimpp && cd vimpp
@@ -87,6 +101,7 @@ Cargo встановлює команду в `~/.cargo/bin` (Windows: `%USERPROF
 | Пошук | `/текст⏎`, далі `n` / `N` |
 | Буфери | `gt`, `gT`, `<C-n>`, `<C-p>`, `:bn`, `:bp`, `:b 2`, `:bd!` |
 | Файли | `<C-b>` (оглядач), `:e шлях`, `:w [файл]`, `:wq`, `:x` |
+| Старт і теки | Меню клавіш показується при кожному запуску; `Ctrl-K`, потім `O` — ввести шлях теки |
 | Опції | `:set number`, `:set nonumber`, `:set tabstop=2`, `:set expandtab!` |
 | Доповнення | `<Tab>`, `<C-n>`, `<C-p>` (у Insert); `<Tab>` у рядку `:` |
 

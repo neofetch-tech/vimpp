@@ -38,10 +38,19 @@ pub fn execute(app: &mut App, raw: &str) {
         "q" | "quit" => app.close_active(false),
         "q!" | "quit!" => app.close_active(true),
         "x" | "exit" | "wq" => {
-            if app.buf().dirty {
-                app.save();
+            let saved = if app.buf().dirty {
+                if rest.is_empty() {
+                    app.save_succeeded()
+                } else {
+                    app.save_as(rest);
+                    !app.buf().dirty
+                }
+            } else {
+                true
+            };
+            if saved {
+                app.close_active(true);
             }
-            app.close_active(true);
         }
         "e" | "edit" | "open" => {
             if rest.is_empty() {

@@ -59,7 +59,9 @@ pub fn draw(frame: &mut Frame, app: &mut App) {
         body[0]
     };
 
-    if app.help_open {
+    if app.welcome_open {
+        draw_welcome(frame, app, chunks[1]);
+    } else if app.help_open {
         draw_help(frame, app, chunks[1]);
     } else {
         draw_editor(frame, app, editor_area);
@@ -67,6 +69,41 @@ pub fn draw(frame: &mut Frame, app: &mut App) {
     draw_status(frame, app, chunks[2]);
     draw_cmdline(frame, app, chunks[3]);
     draw_popups(frame, app, chunks[3], editor_area);
+}
+
+fn draw_welcome(frame: &mut Frame, app: &App, area: Rect) {
+    let t = &app.theme;
+    let lines = vec![
+        Line::from(Span::styled("Vim++", Style::default().fg(t.accent).add_modifier(Modifier::BOLD))),
+        Line::from(Span::styled("Terminal code editor", Style::default().fg(t.cyan).add_modifier(Modifier::BOLD))),
+        Line::from(""),
+        Line::from("Ctrl-K, then O — open a directory"),
+        Line::from("Ctrl-B — open the file explorer"),
+        Line::from("i — insert text    :w — save    :wq — save and quit"),
+        Line::from("F1 or [ HELP ] — full help and key bindings"),
+        Line::from(""),
+        Line::from("Open a file with: vimpp path/to/file"),
+        Line::from("Press any key to continue"),
+    ];
+    let block = Block::default()
+        .borders(Borders::ALL)
+        .border_type(BorderType::Rounded)
+        .border_style(Style::default().fg(t.accent))
+        .title(" Welcome ")
+        .style(Style::default().fg(t.text).bg(t.bg));
+    let inner = block.inner(area);
+    frame.render_widget(Clear, area);
+    frame.render_widget(block, area);
+    let height = (lines.len() as u16).min(inner.height);
+    let centered = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints([Constraint::Min(0), Constraint::Length(height), Constraint::Min(0)])
+        .split(inner)[1];
+    frame.render_widget(
+        Paragraph::new(lines).alignment(ratatui::layout::Alignment::Center)
+            .style(Style::default().fg(t.text).bg(t.bg)),
+        centered,
+    );
 }
 
 fn draw_help_button(frame: &mut Frame, app: &App, area: Rect) {

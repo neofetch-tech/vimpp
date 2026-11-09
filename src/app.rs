@@ -98,6 +98,8 @@ pub struct App {
     pub lua: Option<LuaHost>,
     pub help_open: bool,
     pub help_scroll: u16,
+    pub welcome_open: bool,
+    pub pending_ctrl_k: bool,
 }
 
 impl App {
@@ -126,6 +128,8 @@ impl App {
             lua: None,
             help_open: false,
             help_scroll: 0,
+            welcome_open: false,
+            pending_ctrl_k: false,
         }
     }
 
@@ -212,6 +216,21 @@ impl App {
         }
     }
 
+    pub fn save_succeeded(&mut self) -> bool {
+        let result = self.buf().save();
+        match result {
+            Ok(n) => {
+                let name = self.buf().name();
+                self.set_message(format!("\"{}\" {} bytes written", name, n.saturating_sub(1)));
+                true
+            }
+            Err(e) => {
+                self.set_message(format!("Error saving: {e}"));
+                false
+            }
+        }
+    }
+
     pub fn save_as(&mut self, filename: &str) {
         if filename.is_empty() {
             self.set_message("E32: No file name");
@@ -255,6 +274,25 @@ impl App {
     // ---- dispatch --------------------------------------------------------
 
     pub fn handle_key(&mut self, key: KeyEvent) {
+        if self.welcome_open {
+            self.welcome_open = false;
+        }
+        if self.mode == Mode::Normal && !self.explorer.focused {
+            if self.pending_ctrl_k {
+                self.pending_ctrl_k = false;
+                if key.code == KeyCode::Char('o') || key.code == KeyCode::Char('O') {
+                    self.mode = Mode::Command { search: false };
+                    self.cmd = "e ".into();
+                    return;
+                }
+            } else if key.modifiers.contains(KeyModifiers::CONTROL)
+                && matches!(key.code, KeyCode::Char('k') | KeyCode::Char('K'))
+            {
+                self.pending_ctrl_k = true;
+                self.set_message("Press O to open a directory (Ctrl-K, then O)");
+                return;
+            }
+        }
         if key.code == KeyCode::F(1) {
             self.help_open = !self.help_open;
             self.help_scroll = 0;
@@ -341,6 +379,11 @@ impl App {
     }
 
     fn after_key(&mut self) {
+        // Closing the last buffer sets `should_quit`; the event handler still
+        // reaches its usual post-key cursor clamp before returning.
+        if self.should_quit || self.buffers.is_empty() {
+            return;
+        }
         if self.mode == Mode::Insert {
             self.buf().clamp_cursor_insert();
         } else if matches!(self.mode, Mode::Normal | Mode::Visual { .. }) {
